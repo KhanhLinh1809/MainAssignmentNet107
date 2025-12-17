@@ -1,0 +1,156 @@
+@model MainAssignmentNet107.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Trang Chủ";
+}
+
+<!-- Hero Slider (Carousel) -->
+<div id="heroCarousel" class="carousel slide mb-5 shadow rounded overflow-hidden" data-bs-ride="carousel" data-bs-interval="3500">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="5"></button>
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="6"></button>
+    </div>
+    <div class="carousel-inner">
+        <!-- Slide: User Uploaded -->
+        <div class="carousel-item active">
+            <img src="/images/user_banner.png" class="d-block w-100" alt="User Banner">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Bộ Sưu Tập Mới</h1>
+                <p>Khám phá phong cách độc đáo của riêng bạn.</p>
+                <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 1: Sport -->
+        <div class="carousel-item">
+            <img src="/images/banner_sport.png" class="d-block w-100" alt="Sport Shoes">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Thanh Lịch & Tinh Tế</h1>
+                <p>Những đôi sneaker trắng không bao giờ lỗi mốt.</p>
+                <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 2: Fashion -->
+        <div class="carousel-item">
+            <img src="/images/banner_fashion.png" class="d-block w-100" alt="Fashion Sneakers">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Năng Động Mỗi Ngày</h1>
+                <p>Màu sắc bùng nổ, cá tính riêng biệt.</p>
+                 <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 3: Elegant -->
+        <div class="carousel-item">
+            <img src="/images/banner_elegant.png" class="d-block w-100" alt="Elegant Shoes">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Đẳng Cấp Quý Ông</h1>
+                <p>Giày tây sang trọng cho những sự kiện đặc biệt.</p>
+                 <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 4: Casual -->
+        <div class="carousel-item">
+            <img src="/images/banner_casual.png" class="d-block w-100" alt="Casual Walking">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Nhẹ Nhàng & Êm Ái</h1>
+                <p>Thoải mái dạo bước trên mọi con đường.</p>
+                 <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 5: Hiking -->
+        <div class="carousel-item">
+            <img src="/images/banner_hiking.png" class="d-block w-100" alt="Hiking Boots">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Chinh Phục Thiên Nhiên</h1>
+                <p>Đồng hành cùng bạn trong những chuyến phiêu lưu.</p>
+                 <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+        <!-- Slide 6: Kids -->
+        <div class="carousel-item">
+            <img src="/images/banner_kids.png" class="d-block w-100" alt="Kids Shoes">
+            <div class="carousel-caption d-none d-md-block">
+                <h1>Sắc Màu Tuổi Thơ</h1>
+                <p>Nâng niu bàn chân bé với những mẫu giày đáng yêu.</p>
+                 <a href="#products" class="btn btn-light btn-lg rounded-pill shadow text-primary fw-bold">Mua Ngay</a>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+</div>
+
+<!-- Categories Section -->
+<div class="mb-5 text-center">
+    <h3 class="mb-4">Danh Mục Nổi Bật</h3>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        @if (Model.Categories != null)
+        {
+            foreach (var cate in Model.Categories)
+            {
+                <a asp-action="Category" asp-route-id="@cate.CategoryId" class="btn btn-outline-primary rounded-pill px-4 shadow-sm">@cate.Name</a>
+            }
+        }
+    </div>
+</div>
+
+<!-- Featured Products Section -->
+<div id="products">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h3 class="m-0 text-primary"><i class="bi bi-star-fill text-warning"></i> Sản Phẩm Mới Nhất</h3>
+        <a href="#" class="text-decoration-none fw-bold">Xem Tất Cả <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        @if (Model.FeaturedProducts != null)
+        {
+            foreach (var item in Model.FeaturedProducts)
+            {
+                <div class="col">
+                    <div class="card product-card shadow-sm h-100">
+                        <!-- Product Image -->
+                        <div class="product-img-container">
+                             <a asp-action="Details" asp-route-id="@item.ProductId">
+                                 <img src="@(string.IsNullOrEmpty(item.Image) ? "https://via.placeholder.com/300" : "/images/" + item.Image)" 
+                                      alt="@item.Name"
+                                      onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                             </a>
+                        </div>
+                        
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate" title="@item.Name">
+                                <a asp-action="Details" asp-route-id="@item.ProductId">@item.Name</a>
+                            </h5>
+                            <p class="card-text text-muted small mb-2">@item.CategoryName</p>
+                            
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="price-tag">@item.Price.ToString("N0") đ</span>
+                                    <small class="text-warning">
+                                        <i class="bi bi-star-fill"></i> 4.5
+                                    </small>
+                                </div>
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@item.ProductId" class="btn btn-primary w-100 rounded-pill shadow-sm">
+                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else 
+        {
+            <div class="col-12 text-center">
+                <p>Chưa có sản phẩm nào.</p>
+            </div>
+        }
+    </div>
+</div>

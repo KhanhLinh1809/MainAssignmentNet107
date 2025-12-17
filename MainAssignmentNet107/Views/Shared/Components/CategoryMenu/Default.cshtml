@@ -1,0 +1,16 @@
+@model IEnumerable<MainAssignmentNet107.Models.Category>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Danh Mục
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <li><a class="dropdown-item" asp-controller="Home" asp-action="Category" asp-route-id="@item.CategoryId">@item.Name</a></li>
+            }
+        }
+    </ul>
+</li>

@@ -1,0 +1,102 @@
+@model MainAssignmentNet107.Models.Product
+@{
+    ViewData["Title"] = "Cập Nhật Sản Phẩm";
+    var categories = ViewBag.Categories as List<MainAssignmentNet107.Models.Category>;
+}
+
+<h1>Cập Nhật Sản Phẩm</h1>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data" class="row g-3">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <input type="hidden" asp-for="ProductId" />
+    <input type="hidden" asp-for="Image" /> <!-- Keep old image name if not changing -->
+    
+    <div class="col-md-6">
+        <label class="form-label">Tên Sản Phẩm (*)</label>
+        <input asp-for="Name" class="form-control" required />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Giá (*)</label>
+        <input asp-for="Price" type="number" class="form-control" required />
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Danh Mục</label>
+        <select asp-for="CategoryId" class="form-select">
+            @foreach (var cat in categories)
+            {
+                <option value="@cat.CategoryId">@cat.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Hình Ảnh</label>
+        <input type="file" name="imageFile" class="form-control" accept="image/*" />
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <div class="mt-2">
+                <img src="/images/@Model.Image" alt="Current Image" style="max-height: 100px;" />
+                <p class="small text-muted">Ảnh hiện tại: @Model.Image</p>
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Chọn Màu Sắc</label>
+        <div class="card p-2">
+            @{ var colors = Model.Color ?? ""; }
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedColors" value="Trắng" @(colors.Contains("Trắng") ? "checked" : "")>
+                <label class="form-check-label">Trắng</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedColors" value="Đen" @(colors.Contains("Đen") ? "checked" : "")>
+                <label class="form-check-label">Đen</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedColors" value="Đỏ" @(colors.Contains("Đỏ") ? "checked" : "")>
+                <label class="form-check-label">Đỏ</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedColors" value="Xanh Dương" @(colors.Contains("Xanh Dương") ? "checked" : "")>
+                <label class="form-check-label">Xanh Dương</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedColors" value="Xám" @(colors.Contains("Xám") ? "checked" : "")>
+                <label class="form-check-label">Xám</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Chọn Size</label>
+        <div class="card p-2">
+            @{ var sizes = Model.Size ?? ""; }
+             <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedSizes" value="38" @(sizes.Contains("38") ? "checked" : "")>
+                <label class="form-check-label">38</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedSizes" value="39" @(sizes.Contains("39") ? "checked" : "")>
+                <label class="form-check-label">39</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedSizes" value="40" @(sizes.Contains("40") ? "checked" : "")>
+                <label class="form-check-label">40</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedSizes" value="41" @(sizes.Contains("41") ? "checked" : "")>
+                <label class="form-check-label">41</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="selectedSizes" value="42" @(sizes.Contains("42") ? "checked" : "")>
+                <label class="form-check-label">42</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <label class="form-label">Mô Tả</label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+    </div>
+    <div class="col-12 mt-3">
+        <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
+    </div>
+</form>

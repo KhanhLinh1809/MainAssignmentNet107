@@ -1,0 +1,82 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng";
+    var details = ViewBag.Details as List<MainAssignmentNet107.Models.CartItem>;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Chi Tiết Đơn Hàng #@Model.CartId</h1>
+    <a asp-action="Index" class="btn btn-secondary">Quay Lại Danh Sách</a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">Thông Tin Khách Hàng</div>
+            <div class="card-body">
+                <p><strong>Họ Tên:</strong> @Model.CustomerName</p>
+                <p><strong>Địa Chỉ Giao:</strong> @Model.ReceiverAddress</p>
+                <p><strong>Số Điện Thoại:</strong> @Model.ReceiverPhone</p>
+                <p><strong>Ngày Đặt:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+        </div>
+    </div>
+     <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">Trạng Thái Đơn Hàng</div>
+            <div class="card-body text-center">
+                 <h3 class="mt-2 mb-3">
+                    @if (Model.Status == "Pending") { <span class="badge bg-warning text-dark">Chờ Duyệt</span> }
+                    else if (Model.Status == "Approved") { <span class="badge bg-success">Đã Duyệt</span> }
+                    else if (Model.Status == "Cancelled") { <span class="badge bg-danger">Đã Hủy</span> }
+                </h3>
+                
+                @if (Model.Status == "Pending")
+                {
+                    <div class="btn-group">
+                        <a asp-action="Approve" asp-route-id="@Model.CartId" class="btn btn-success">Duyệt Đơn <i class="bi bi-check-lg"></i></a>
+                        <a asp-action="Cancel" asp-route-id="@Model.CartId" class="btn btn-danger" onclick="return confirm('Bạn chắc chắn muốn hủy đơn này?');">Hủy Đơn <i class="bi bi-x-lg"></i></a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3>Sản Phẩm Đã Đặt</h3>
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Sản Phẩm</th>
+            <th>Hình Ảnh</th>
+            <th>Giá</th>
+            <th>Số Lượng</th>
+            <th>Thành Tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in details)
+        {
+            <tr>
+                <td>
+                    <div class="fw-bold">@item.ProductName</div>
+                    <div class="small text-muted">Màu: @item.Color | Size: @item.Size</div>
+                </td>
+                <td>
+                      <img src="@(string.IsNullOrEmpty(item.Image) ? "https://via.placeholder.com/50" : "/images/" + item.Image)" 
+                             style="width: 50px; height: 50px; object-fit: cover;" 
+                             onerror="this.src='https://via.placeholder.com/50'"/>
+                </td>
+                <td>@item.Price.ToString("N0") đ</td>
+                <td>@item.Quantity</td>
+                <td>@item.Total.ToString("N0") đ</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-end fw-bold">Tổng Cộng:</td>
+            <td class="fw-bold fs-5 text-primary">@Model.TotalAmount.ToString("N0") đ</td>
+        </tr>
+    </tfoot>
+</table>

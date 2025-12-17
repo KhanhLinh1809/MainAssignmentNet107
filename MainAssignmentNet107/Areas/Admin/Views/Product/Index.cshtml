@@ -1,0 +1,57 @@
+@model List<MainAssignmentNet107.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản Lý Sản Phẩm";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Danh Sách Sản Phẩm</h1>
+    <div>
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm Mới</a>
+        <a asp-action="BulkUpdate" class="btn btn-warning ms-2" onclick="return confirm('Bạn có chắc chắn muốn cập nhật tự động Màu và Size cho TẤT CẢ sản phẩm không?')"><i class="bi bi-magic"></i> Auto-Fill Variants</a>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Warning"] != null)
+{
+    <div class="alert alert-warning">@TempData["Warning"]</div>
+}
+
+<table class="table table-striped table-hover align-middle">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Hình Ảnh</th>
+            <th>Tên Sản Phẩm</th>
+            <th>Danh Mục</th>
+            <th>Giá</th>
+            <th>Màu/Size</th>
+            <th>Thao Tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>
+                     <img src="@(string.IsNullOrEmpty(item.Image) ? "https://via.placeholder.com/50" : "/images/" + item.Image)" 
+                             style="width: 50px; height: 50px; object-fit: cover;" 
+                             onerror="this.src='https://via.placeholder.com/50'"/>
+                </td>
+                <td>@item.Name</td>
+                <td>@item.CategoryName</td>
+                <td>@item.Price.ToString("N0") đ</td>
+                <td>@item.Color / @item.Size</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductId" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?');"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

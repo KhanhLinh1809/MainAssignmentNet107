@@ -1,0 +1,50 @@
+@model MainAssignmentNet107.Models.Customer
+@{
+    ViewData["Title"] = "Thêm Tài Khoản Mới";
+}
+
+<h1>Thêm Tài Khoản Mới</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label">Tên Đăng Nhập</label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Mật Khẩu</label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FullName" class="form-label">Họ và Tên</label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label">Vai Trò</label>
+                <select asp-for="Role" class="form-select">
+                    <option value="Customer">Khách Hàng (Customer)</option>
+                    <option value="Staff">Nhân Viên (Staff)</option>
+                    <option value="Admin">Quản Trị Viên (Admin)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Tạo Tài Khoản</button>
+            <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+        </form>
+    </div>
+</div>

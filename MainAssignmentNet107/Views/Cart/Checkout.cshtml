@@ -1,0 +1,63 @@
+@model List<MainAssignmentNet107.Models.CartItem>
+@{
+    ViewData["Title"] = "Thanh Toán";
+    decimal total = Model.Sum(i => i.Total);
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <h3 class="mb-3">Thông Tin Giao Hàng</h3>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+                @if (ViewBag.Error.Contains("Invalid column name") || ViewBag.Error.Contains("Color") || ViewBag.Error.Contains("Size"))
+                {
+                    <div class="mt-2">
+                        <a href="/Home/FixDatabase" class="btn btn-sm btn-warning fw-bold text-dark">
+                            <i class="bi bi-wrench"></i> Sửa Lỗi Database Ngay
+                        </a>
+                        <small class="d-block mt-1 text-muted">Bấm nút này để cập nhật Cơ sở dữ liệu, sau đó thử Đặt hàng lại.</small>
+                    </div>
+                }
+            </div>
+        }
+        <form asp-action="Checkout" method="post">
+            <div class="mb-3">
+                <label class="form-label">Họ và tên người nhận</label>
+                <input type="text" class="form-control" value="@Context.Session.GetString("Username")" readonly> 
+                <small class="text-muted">Mặc định lấy từ tài khoản đăng nhập</small>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ nhận hàng (*)</label>
+                <input name="receiverAddress" class="form-control" required placeholder="Số nhà, đường, phường, quận..." />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Số điện thoại (*)</label>
+                <input name="receiverPhone" class="form-control" required placeholder="09xxxx..." />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100">Xác Nhận Đặt Hàng <i class="bi bi-check-circle"></i></button>
+        </form>
+    </div>
+    
+    <div class="col-md-4">
+        <h4 class="mb-3 text-muted">Đơn hàng của bạn</h4>
+        <ul class="list-group mb-3">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">@item.ProductName</h6>
+                        <small class="text-muted">SL: @item.Quantity</small>
+                    </div>
+                    <span class="text-muted">@item.Total.ToString("N0") đ</span>
+                </li>
+            }
+            <li class="list-group-item d-flex justify-content-between">
+                <span>Tổng cộng (VND)</span>
+                <strong>@total.ToString("N0") đ</strong>
+            </li>
+        </ul>
+    </div>
+</div>

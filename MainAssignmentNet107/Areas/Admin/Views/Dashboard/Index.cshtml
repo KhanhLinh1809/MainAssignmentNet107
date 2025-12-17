@@ -1,0 +1,140 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var summary = ViewBag.Summary;
+    var revenueData = ViewBag.RevenueChart as List<dynamic>;
+    var topProducts = ViewBag.TopProducts as List<dynamic>;
+}
+
+<h1 class="mb-4">Tổng Quan Kinh Doanh</h1>
+
+<!-- Summary Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Doanh Thu</h5>
+                <h2 class="display-6 fw-bold">@summary.TotalRevenue.ToString("N0") đ</h2>
+                <p class="card-text mb-0">Tổng doanh thu thực tế</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-dark h-100">
+            <div class="card-body">
+                <h5 class="card-title">Đơn Chờ Duyệt</h5>
+                <h2 class="display-6 fw-bold">@summary.PendingOrders</h2>
+                <p class="card-text mb-0">Cần xử lý ngay</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Tổng Đơn Hàng</h5>
+                <h2 class="display-6 fw-bold">@summary.TotalOrders</h2>
+                <p class="card-text mb-0">Đơn hàng trọn đời</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Khách Hàng</h5>
+                <h2 class="display-6 fw-bold">@summary.TotalCustomers</h2>
+                <p class="card-text mb-0">Thành viên đăng ký</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Revenue Chart -->
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-graph-up"></i> Biểu Đồ Doanh Thu (7 Ngày Gần Nhất)</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Products -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-trophy"></i> Top 5 Sản Phẩm Bán Chạy</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                @if (topProducts != null && topProducts.Count > 0)
+                {
+                    foreach (var item in topProducts)
+                    {
+                        <li class="list-group-item d-flex align-items-center">
+                             <img src="@(string.IsNullOrEmpty(item.Image) ? "https://via.placeholder.com/50" : "/images/" + item.Image)" 
+                                     style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" 
+                                     class="me-3"
+                                     onerror="this.src='https://via.placeholder.com/50'"/>
+                            <div>
+                                <h6 class="mb-0 text-truncate" style="max-width: 150px;">@item.Name</h6>
+                                <small class="text-muted">Đã bán: <strong>@item.TotalSold</strong></small>
+                            </div>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item text-center text-muted">Chưa có dữ liệu bán hàng</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('revenueChart');
+        
+        // Prepare Data from ViewBag
+        // Note: Razor renders this as JS array
+        const labels = [@Html.Raw(string.Join(",", revenueData.Select(x => $"'{x.Date}'")))];
+        const data = [@string.Join(",", revenueData.Select(x => x.Revenue))];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels.reverse(), // Show oldest to newest left to right
+                datasets: [{
+                    label: 'Doanh Thu (VND)',
+                    data: data.reverse(),
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                         ticks: {
+                            callback: function(value, index, values) {
+                                return value.toLocaleString('vi-VN') + ' đ';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>

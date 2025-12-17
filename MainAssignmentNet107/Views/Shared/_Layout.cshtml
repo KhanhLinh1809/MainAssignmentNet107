@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MainAssignmentNet107</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MainAssignmentNet107.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand p-0" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="/images/polyshoeshop_logo.png" alt="PolyShoeShop" style="height: 50px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center">
+                    <ul class="navbar-nav flex-grow-1 ms-3">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+                        </li>
+                        @await Component.InvokeAsync("CategoryMenu")
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Cart" asp-action="Index">Giỏ Hàng <i class="bi bi-cart-fill text-primary"></i></a>
+                        </li>
+                        @if (Context.Session.GetString("Role") == "Admin" || Context.Session.GetString("Role") == "Staff")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" asp-area="Admin" asp-controller="Product" asp-action="Index">Quản Trị</a>
+                            </li>
+                        }
+                    </ul>
+                    <form class="d-flex me-3" asp-controller="Home" asp-action="Search" method="get">
+                        <div class="input-group">
+                             <input class="form-control rounded-pill-start border-end-0" type="search" placeholder="Tìm giày..." aria-label="Search" name="query">
+                             <button class="btn btn-outline-secondary rounded-pill-end border-start-0" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
+                    
+                    <ul class="navbar-nav align-items-center gap-2">
+                        @if (Context.Session.GetString("Username") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-primary fw-bold" asp-controller="Account" asp-action="Profile" style="text-decoration: underline;">Xin chào, @Context.Session.GetString("Username")</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger btn-sm rounded-pill" asp-controller="Account" asp-action="Logout">Đăng Xuất</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn-nav-register" asp-controller="Account" asp-action="Register">Đăng Ký</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn-nav-login" asp-controller="Account" asp-action="Login">Đăng Nhập</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="text-white pt-5 pb-3" style="background-color: #000000;">
+        <div class="container">
+            <!-- Top Section: Feedback & Connect -->
+            <div class="row align-items-center mb-5 border-bottom border-secondary pb-4" style="border-color: #333 !important;">
+                <div class="col-md-6">
+                    <h5 class="fw-bold text-uppercase mb-2">POLYSHOESHOP LẮNG NGHE BẠN!</h5>
+                    <p class="small text-secondary mb-3">Chúng tôi luôn trân trọng mọi ý kiến đóng góp từ khách hàng để cải thiện dịch vụ tốt hơn.</p>
+                    <a href="#" class="btn btn-light rounded-pill px-4 fw-bold" style="font-size: 0.9rem;">ĐÓNG GÓP Ý KIẾN <i class="bi bi-arrow-right ms-2"></i></a>
+                </div>
+                <div class="col-md-6 text-md-end mt-4 mt-md-0">
+                    <div class="mb-3">
+                         <span class="me-4"><i class="bi bi-telephone me-2"></i>hotline <span class="fw-bold">1900.272737</span></span>
+                         <span><i class="bi bi-envelope me-2"></i>email <span class="fw-bold">polyshoeshop@gmail.com</span></span>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-outline-secondary border-0 text-white rounded-circle me-1"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary border-0 text-white rounded-circle me-1"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary border-0 text-white rounded-circle me-1"><i class="bi bi-tiktok"></i></a>
+                        <a href="#" class="btn btn-outline-secondary border-0 text-white rounded-circle"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Section: Links -->
+            <div class="row mb-5">
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">VỀ POLYSHOESHOP</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Câu chuyện thương hiệu</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Tuyển dụng</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog thời trang</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Chuỗi cửa hàng</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">CHÍNH SÁCH</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Chính sách đổi trả</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Chính sách bảo mật</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Chính sách vận chuyển</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Khách hàng thân thiết</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">HỖ TRỢ KHÁCH HÀNG</h6>
+                    <ul class="list-unstyled small text-secondary">
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Hướng dẫn chọn size</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Hướng dẫn mua hàng</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Câu hỏi thường gặp</a></li>
+                        <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Kiểm tra đơn hàng</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="fw-bold text-uppercase mb-3">ĐỊA CHỈ LIÊN HỆ</h6>
+                    <p class="small text-secondary">
+                        Văn phòng Hà Nội: 249 Xã Đàn, Nam Đồng, Đống Đa, Hà Nội<br>
+                        Văn phòng TP.HCM: Lô C3, đường D2, KCN Cát Lái, TP. Thủ Đức, TP.HCM
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Copyright -->
+            <div class="border-top border-secondary pt-4 d-flex flex-column flex-md-row justify-content-between align-items-center" style="border-color: #333 !important;">
+                <div class="text-secondary small">
+                    <p class="mb-1">&copy; 2025 CÔNG TY TNHH POLYSHOESHOP. All rights reserved.</p>
+                    <p class="mb-0">Mã số doanh nghiệp: 0108085873. Cấp ngày 20/02/2019.</p>
+                </div>
+                <div class="mt-3 mt-md-0">
+                    <!-- Simple shield icons as seen in reference image -->
+                    <i class="bi bi-shield-check fs-4 text-white me-3"></i>
+                    <i class="bi bi-award fs-4 text-white"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
